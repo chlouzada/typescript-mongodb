@@ -1,4 +1,12 @@
-import { test, assert, beforeEach, afterEach, describe } from "vitest"
+import {
+  test,
+  assert,
+  beforeEach,
+  afterEach,
+  describe,
+  beforeAll,
+  afterAll,
+} from "vitest"
 import { Client } from "../src"
 import { z } from "zod"
 
@@ -23,13 +31,19 @@ const clearDb = async () => {
   }
 }
 
-beforeEach(async () => {
+beforeAll(async () => {
   await client.connect()
+})
+
+beforeEach(async () => {
   await clearDb()
 })
 
 afterEach(async () => {
   await clearDb()
+})
+
+afterAll(async () => {
   await client.close()
 })
 
