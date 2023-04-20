@@ -48,13 +48,24 @@ afterAll(async () => {
 })
 
 describe("client testing", () => {
-  test("typed ref key", async () => {
+  test("ref key", async () => {
     const dbName = "first"
     const collectionName = "persons"
-
     const collection = client.ref(`${dbName}.${collectionName}`)
-
     assert.equal(collection.collectionName, collectionName)
     assert.equal(collection.dbName, dbName)
+  })
+
+  test("dbRef key", async () => {
+    const dbName = "first"
+    const db = client.dbRef(dbName)
+    assert.equal(db.databaseName, dbName)
+  })
+
+  test("collectionRef key", async () => {
+    const collectionName = "persons"
+    const db = client.dbRef("first")
+    const collection = db.collectionRef(collectionName)
+    assert.equal(collection.collectionName, collectionName)
   })
 })

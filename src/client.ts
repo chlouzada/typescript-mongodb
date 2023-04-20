@@ -3,6 +3,8 @@ import {
   DbOptions,
   MongoClientOptions,
   MongoClient,
+  Db,
+  Collection,
 } from "mongodb"
 import { z } from "zod"
 import { Key } from "./types"
@@ -23,6 +25,27 @@ export class Client<
   }) {
     super(uri, options)
     client = this
+  }
+
+  dbRef<K extends keyof T & string>(
+    key: K,
+    options?: DbOptions,
+  ): Db & {
+    collectionRef: (
+      key: keyof T[K] & string,
+      options?: CollectionOptions,
+    ) => Collection
+  } {
+    const db = super.db(key, options)
+
+    const collectionRef = (
+      key: keyof T[K] & string,
+      options?: CollectionOptions,
+    ) => {
+      return db.collection(key, options)
+    }
+
+    return Object.assign(db, { collectionRef })
   }
 
   ref(
