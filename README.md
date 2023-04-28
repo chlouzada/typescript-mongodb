@@ -1,35 +1,34 @@
-**💛 You can help the author become a full-time open-source maintainer by [sponsoring him on GitHub](https://github.com/sponsors/egoist).**
+# typescript-mongodb
 
----
-
-# my-ts-lib
-
-[![npm version](https://badgen.net/npm/v/my-ts-lib)](https://npm.im/my-ts-lib) [![npm downloads](https://badgen.net/npm/dm/my-ts-lib)](https://npm.im/my-ts-lib)
-
-## Using this template
-
-- Search `my-ts-lib` and replace it with your custom package name.
-- Search `egoist` and replace it with your name.
-
-Features:
-
-- Package manager [pnpm](https://pnpm.js.org/), safe and fast
-- Release with [semantic-release](https://npm.im/semantic-release)
-- Bundle with [tsup](https://github.com/egoist/tsup)
-- Test with [vitest](https://vitest.dev)
-
-To skip CI (GitHub action), add `skip-ci` to commit message. To skip release, add `skip-release` to commit message.
+Simple API layer for MongoDB with TypeScript support.
 
 ## Install
 
-```bash
-npm i my-ts-lib
+## Usage
+
+```ts
+import { Client } from "typescript-mongodb"
+
+const options = {
+  uri,
+  db: {
+    first: {
+      collectionOfFirstDb: true,
+    },
+    second: {
+      collectionOfSecondDb: true,
+    },
+  },
+}
+
+const client = new Client(options)
+
+
+const collection = client.ref('first.collectionOfFirstDb')
+
+// OR
+
+const db = client.dbRef('first')
+const collection = db.collectionRef('collectionOfFirstDb')
+
 ```
-
-## Sponsors
-
-[![sponsors](https://sponsors-images.egoist.dev/sponsors.svg)](https://github.com/sponsors/egoist)
-
-## License
-
-MIT &copy; [EGOIST](https://github.com/sponsors/egoist)
