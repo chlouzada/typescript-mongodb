@@ -47,9 +47,19 @@ afterAll(async () => {
 })
 
 describe("client testing", () => {
+  test("type check ref key", async () => {
+    client.ref("first.persons")
+    client.ref("second.animals")
+    // @ts-expect-error
+    client.ref("x")
+    // @ts-expect-error
+    client.ref("first.x")
+  })
+
   test("ref key", async () => {
     const dbName = "first"
     const collectionName = "persons"
+    client.ref("first.persons")
     const collection = client.ref(`${dbName}.${collectionName}`)
     assert.equal(collection.collectionName, collectionName)
     assert.equal(collection.dbName, dbName)
