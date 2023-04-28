@@ -8,16 +8,15 @@ import {
   afterAll,
 } from "vitest"
 import { Client } from "../src"
-import { z } from "zod"
 
 const options = {
   uri: "mongodb://localhost:27017/first",
   db: {
     first: {
-      persons: z.object({ title: z.string() }),
+      persons: true,
     },
     second: {
-      animals: z.any(),
+      animals: true,
     },
   },
 }

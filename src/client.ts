@@ -6,13 +6,12 @@ import {
   Db,
   Collection,
 } from "mongodb"
-import { z } from "zod"
 import { Key } from "./types"
 
 export let client: MongoClient
 
 export class Client<
-  T extends Record<string, Record<string, z.ZodType<object>>>,
+  T extends Record<string, Record<string, boolean>>,
 > extends MongoClient {
   constructor({
     db,
