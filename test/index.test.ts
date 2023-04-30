@@ -1,50 +1,6 @@
-import {
-  test,
-  assert,
-  beforeEach,
-  afterEach,
-  describe,
-  beforeAll,
-  afterAll,
-} from "vitest"
-import { Client } from "../src"
+import { test, assert, describe } from "vitest"
 
-const options = {
-  uri: "mongodb://localhost:27017/first",
-  db: {
-    first: {
-      persons: true,
-    },
-    second: {
-      animals: true,
-    },
-  },
-}
-
-const client = new Client(options)
-
-const clearDb = async () => {
-  for (const db in options.db) {
-    const dbName = db as keyof typeof options.db
-    await client.db(dbName).dropDatabase()
-  }
-}
-
-beforeAll(async () => {
-  await client.connect()
-})
-
-beforeEach(async () => {
-  await clearDb()
-})
-
-afterEach(async () => {
-  await clearDb()
-})
-
-afterAll(async () => {
-  await client.close()
-})
+import { client } from "./setup"
 
 describe("client testing", () => {
   test("ref key", async () => {

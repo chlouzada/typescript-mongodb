@@ -8,6 +8,6 @@ export type Key<TObject extends Record<string, unknown>> = {
   }}`
 }[keyof TObject & string]
 
-export type Collection<T extends Record<string, any>> = {
-  [K in Key<T>]: T[K]
+export type Collection<TObject extends Record<string, any>> = {
+  [TKey in Key<TObject>]: TObject[TKey]
 }
