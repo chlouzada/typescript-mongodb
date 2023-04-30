@@ -36,6 +36,7 @@
     "vitest": "0.28.5"
   },
   "dependencies": {
-    "mongodb": "^5.2.0"
+    "mongodb": "^5.2.0",
+    "zod": "^3.21.4"
   }
 }

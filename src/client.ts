@@ -7,11 +7,12 @@ import {
   Collection,
 } from "mongodb"
 import { Key } from "./types"
+import { z } from "zod"
 
 export let client: MongoClient
 
 export class Client<
-  T extends Record<string, Record<string, boolean>>,
+  T extends Record<string, Record<string, boolean | z.ZodType<object>>>,
 > extends MongoClient {
   constructor({
     db,
@@ -35,7 +36,7 @@ export class Client<
       options?: CollectionOptions,
     ) => Collection
   } {
-    const db = super.db(key, options)
+    const db: any = super.db(key, options)
 
     const collectionRef = (
       key: keyof T[K] & string,
@@ -44,7 +45,9 @@ export class Client<
       return db.collection(key, options)
     }
 
-    return Object.assign(db, { collectionRef })
+    db.collectionRef = collectionRef
+
+    return db
   }
 
   ref(
