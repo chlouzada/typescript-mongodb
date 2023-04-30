@@ -2,14 +2,12 @@ import { ObjectId } from "mongodb"
 
 export type Document<T> = T & { _id: ObjectId | string }
 
-export type AnyObject = Record<string, any>
-
-export type Key<TObject extends AnyObject> = {
+export type Key<TObject extends Record<string, unknown>> = {
   [TKeyDb in keyof TObject & string]: `${TKeyDb}.${keyof {
     [TKeyCollection in keyof TObject[TKeyDb] & string]: TKeyCollection
   }}`
 }[keyof TObject & string]
 
-export type Collection<T extends AnyObject> = {
+export type Collection<T extends Record<string, any>> = {
   [K in Key<T>]: T[K]
 }
