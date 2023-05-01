@@ -4,6 +4,7 @@ import {
   MongoClientOptions,
   MongoClient,
   ObjectId,
+  Collection,
 } from "mongodb"
 import { Key } from "./types"
 import { z } from "zod"
@@ -36,26 +37,21 @@ export class Client<
   model<TSchema extends z.ZodTypeAny>(key: Key<T>, schema: TSchema) {
     const [dbName, collectionName] = key.split(".")
     const collection = this.db(dbName).collection(collectionName)
-
-    const findById = async (
-      id: string | ObjectId,
-    ): Promise<z.infer<TSchema> | undefined> => {
-      return collection.findOne({
-        _id: toObjectId(id),
-      }) as unknown as z.infer<TSchema>
-    }
-
-    const find = async (
-      filter?: z.infer<TSchema>,
-    ): Promise<z.infer<TSchema>[]> => {
-      return collection
-        .find(filter ?? {})
-        .toArray() as unknown as z.infer<TSchema>[]
-    }
-
     return {
-      findById,
-      find,
+      findById: findById<TSchema>(collection),
+      find: find<TSchema>(collection),
     }
   }
 }
+
+const find =
+  <TSchema extends z.ZodTypeAny>(collection: Collection) =>
+  async (filter?: z.infer<TSchema>): Promise<z.infer<TSchema>[]> =>
+    collection.find(filter ?? {}).toArray() as unknown as z.infer<TSchema>[]
+
+const findById =
+  <TSchema extends z.ZodTypeAny>(collection: Collection) =>
+  async (id: string | ObjectId): Promise<z.infer<TSchema> | undefined> =>
+    collection.findOne({
+      _id: toObjectId(id),
+    }) as unknown as z.infer<TSchema>
