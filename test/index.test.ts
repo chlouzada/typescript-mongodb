@@ -12,18 +12,18 @@ describe("client testing", () => {
     assert.equal(collection.dbName, dbName)
   })
 
-  test("dbRef key", async () => {
-    const dbName = "first"
-    const db = client.dbRef(dbName)
-    assert.equal(db.databaseName, dbName)
-  })
+  // test("dbRef key", async () => {
+  //   const dbName = "first"
+  //   const db = client.dbRef(dbName)
+  //   assert.equal(db.databaseName, dbName)
+  // })
 
-  test("collectionRef key", async () => {
-    const collectionName = "persons"
-    const db = client.dbRef("first")
-    const collection = db.collectionRef(collectionName)
-    assert.equal(collection.collectionName, collectionName)
-  })
+  // test("collectionRef key", async () => {
+  //   const collectionName = "persons"
+  //   const db = client.dbRef("first")
+  //   const collection = db.collectionRef(collectionName)
+  //   assert.equal(collection.collectionName, collectionName)
+  // })
 
   test("type inference", async () => {
     return

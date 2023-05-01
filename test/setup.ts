@@ -4,12 +4,8 @@ import { Client } from "../src"
 const options = {
   uri: "mongodb://localhost:27017/first",
   db: {
-    first: {
-      persons: true,
-    },
-    second: {
-      animals: true,
-    },
+    first: ["persons"] as const,
+    second: ["animals", "aaa"] as const,
   },
 }
 
