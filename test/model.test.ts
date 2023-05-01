@@ -1,11 +1,11 @@
 import { test, assert, describe } from "vitest"
 
-import { client } from "./setup"
+import { typedClient } from "./setup"
 import { z } from "zod"
 
 describe("model testing", () => {
   test("1", async () => {
-    const ref = client.ref("first.persons")
+    const ref = typedClient.ref("first.persons")
     // const doc = await ref.findById(id)
 
     const { insertedId } = await ref.insertOne({
@@ -13,7 +13,7 @@ describe("model testing", () => {
       age: 20,
     })
 
-    const PersonModel = client.model(
+    const PersonModel = typedClient.model(
       "first.persons",
       z.object({
         name: z.string(),

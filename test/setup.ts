@@ -1,25 +1,24 @@
 import { beforeEach, afterEach, beforeAll, afterAll } from "vitest"
 import { Client } from "../src"
 
-const options = {
+const typedClient = new Client<{
+  first: ["persons"]
+  second: ["animals"]
+}>({
   uri: "mongodb://localhost:27017/first",
-  db: {
-    first: ["persons"] as const,
-    second: ["animals", "aaa"] as const,
-  },
-}
+})
 
-const client = new Client(options)
+const notTypedClient = new Client({
+  uri: "mongodb://localhost:27017/test",
+})
 
 const clearDb = async () => {
-  for (const db in options.db) {
-    const dbName = db as keyof typeof options.db
-    await client.db(dbName).dropDatabase()
-  }
+  await typedClient.db("first").dropDatabase()
+  await typedClient.db("second").dropDatabase()
 }
 
 beforeAll(async () => {
-  await client.connect()
+  await typedClient.connect()
 })
 
 beforeEach(async () => {
@@ -31,7 +30,7 @@ afterEach(async () => {
 })
 
 afterAll(async () => {
-  await client.close()
+  await typedClient.close()
 })
 
-export { client }
+export { typedClient, notTypedClient }
