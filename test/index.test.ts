@@ -10,21 +10,12 @@ describe("client testing", () => {
     const collection = client.ref(`${dbName}.${collectionName}`)
     assert.equal(collection.collectionName, collectionName)
     assert.equal(collection.dbName, dbName)
-
-    client.ref("first.persons")
-    client.ref("second.animals")
-    // @ts-expect-error
-    client.ref("x")
-    // @ts-expect-error
-    client.ref("first.x")
   })
 
   test("dbRef key", async () => {
     const dbName = "first"
     const db = client.dbRef(dbName)
     assert.equal(db.databaseName, dbName)
-    // @ts-expect-error
-    client.dbRef("x")
   })
 
   test("collectionRef key", async () => {
@@ -32,7 +23,19 @@ describe("client testing", () => {
     const db = client.dbRef("first")
     const collection = db.collectionRef(collectionName)
     assert.equal(collection.collectionName, collectionName)
+  })
+
+  test("type inference", async () => {
+    return
+    client.ref("first.persons")
+    client.ref("second.animals")
     // @ts-expect-error
-    db.collectionRef("x")
+    client.ref("x")
+    // @ts-expect-error
+    client.ref("first.x")
+    // @ts-expect-error
+    client.dbRef("x")
+    // @ts-expect-error
+    client.dbRef("first").collectionRef("x")
   })
 })
