@@ -67,14 +67,14 @@ const findById = <
   options?: TOptions,
 ) => {
   const { refs } = options ?? {}
-  function fn(
+  function fn<T extends Partial<Record<keyof TOptions["refs"], true>>>(
     id: string | ObjectId,
     options: {
-      populate: Partial<Record<keyof TOptions["refs"], true>>
+      populate: T
     },
   ): Promise<
     | Document<
-        Omit<z.infer<TSchema>, keyof TOptions["refs"]> & {
+        Omit<z.infer<TSchema>, keyof T> & {
           [K in keyof TOptions["refs"]]: z.infer<TSchema>[K] extends Array<any>
             ? unknown[]
             : unknown
