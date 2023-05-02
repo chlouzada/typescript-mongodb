@@ -1,20 +1,21 @@
 import { beforeEach, afterEach, beforeAll, afterAll } from "vitest"
 import { Client } from "../src"
 
-const typedClient = new Client<{
-  first: ["persons"]
-  second: ["animals"]
-}>({
-  uri: "mongodb://localhost:27017/first",
+type Config = {
+  test: ["one", "two"]
+}
+
+const typedClient = new Client<Config>({
+  uri: "mongodb://localhost:27017",
 })
 
 const notTypedClient = new Client({
-  uri: "mongodb://localhost:27017/test",
+  uri: "mongodb://localhost:27017",
 })
 
 const clearDb = async () => {
-  await typedClient.db("first").dropDatabase()
-  await typedClient.db("second").dropDatabase()
+  const dbName: keyof Config = "test"
+  await typedClient.db(dbName).dropDatabase()
 }
 
 beforeAll(async () => {
