@@ -2,6 +2,8 @@
 
 Simple API layer for MongoDB with TypeScript support.
 
+This is a work in progress.
+
 ## Install
 
 ## Usage
@@ -9,19 +11,13 @@ Simple API layer for MongoDB with TypeScript support.
 ```ts
 import { Client } from "typescript-mongodb"
 
-const options = {
-  uri,
-  db: {
-    first: {
-      collectionOfFirstDb: true,
-    },
-    second: {
-      collectionOfSecondDb: true,
-    },
-  },
+type Config = {
+  'my-data-base': ['collection1', 'collection2']
 }
 
-const client = new Client(options)
+const client = new Client<Config>({
+  uri,
+})
 
 
 const collection = client.ref('first.collectionOfFirstDb')

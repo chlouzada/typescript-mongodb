@@ -1,8 +1,6 @@
-import { test, assert, describe, expectTypeOf } from "vitest"
-
+import { test, assert, describe } from "vitest"
 import { typedClient } from "./setup"
-import { z } from "zod"
-import { zodObjectId } from "../src"
+import { type } from "../src"
 
 describe("model testing", () => {
   test("1", async () => {
@@ -31,10 +29,10 @@ describe("model testing", () => {
 
     const PersonModel = typedClient.model(
       "test.one",
-      z.object({
-        name: z.string(),
-        age: z.number(),
-        pets: z.array(zodObjectId),
+      type.object({
+        name: type.string,
+        age: type.number,
+        pets: type.array(type.objectId).optional(),
       }),
       {
         refs: {

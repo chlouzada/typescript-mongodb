@@ -1,2 +1,2 @@
 export { Client } from "./client"
-export { zodObjectId } from "./utils/zodObjectId"
+export { validators as type } from "./utils/validators"
