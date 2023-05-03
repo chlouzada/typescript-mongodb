@@ -1,5 +1,5 @@
 {
-  "name": "typescript-mongodb",
+  "name": "tsmdb",
   "version": "0.0.1",
   "description": "MongoDB API layer with TypeScript support",
   "publishConfig": {
