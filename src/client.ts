@@ -70,7 +70,7 @@ const findById = <
   function fn(
     id: string | ObjectId,
     options: {
-      populate: Record<keyof TOptions["refs"], true>
+      populate: Partial<Record<keyof TOptions["refs"], true>>
     },
   ): Promise<
     | Document<
