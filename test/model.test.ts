@@ -1,4 +1,4 @@
-import { test, assert, describe } from "vitest"
+import { test, assert, describe, expectTypeOf } from "vitest"
 import { typedClient } from "./setup"
 import { type } from "../src"
 import { ObjectId } from "mongodb"
