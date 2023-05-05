@@ -6,7 +6,7 @@ import {
   ObjectId,
   Collection,
 } from "mongodb"
-import { Key, KeyCollection } from "./types"
+import { Key, KeyCollection, Prettify } from "./types"
 import { z } from "zod"
 import { toObjectId } from "./utils/toObjectId"
 
@@ -70,21 +70,23 @@ const findById = <
   function fn<T extends Partial<Record<keyof TOptions["refs"], true>>>(
     id: string | ObjectId,
     options: {
-      populate: T
+      populate: Prettify<T>
     },
   ): Promise<
-    | Document<
-        Omit<z.infer<TSchema>, keyof T> & {
-          [K in keyof TOptions["refs"]]: z.infer<TSchema>[K] extends Array<any>
-            ? unknown[]
-            : unknown
-        }
+    | Prettify<
+        Document<
+          Omit<z.infer<TSchema>, keyof T> & {
+            [K in keyof TOptions["refs"]]: z.infer<TSchema>[K] extends Array<any>
+              ? unknown[]
+              : unknown
+          }
+        >
       >
     | undefined
   >
   function fn(
     id: string | ObjectId,
-  ): Promise<Document<z.infer<TSchema>> | undefined>
+  ): Promise<Prettify<Document<z.infer<TSchema>>> | undefined>
   async function fn(): Promise<unknown> {
     const [id, options] = arguments as unknown as [
       string | ObjectId,
