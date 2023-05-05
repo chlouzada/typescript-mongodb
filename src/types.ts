@@ -1,5 +1,9 @@
 import { ObjectId } from "mongodb"
 
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
 export type Document<T> = T & { _id: ObjectId | string }
 
 export type Key<TObject extends Record<string, readonly string[]>> = {
