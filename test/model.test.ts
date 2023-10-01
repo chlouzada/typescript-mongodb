@@ -33,7 +33,7 @@ describe("model testing", () => {
         name: type.string,
         age: type.number,
         pets: type.array(type.objectId).optional(),
-        favorite: type.objectId,
+        favorite: type.objectId.optional(),
       }),
       {
         refs: {
@@ -46,15 +46,15 @@ describe("model testing", () => {
     const notFound = await PersonModel.findById("000000000000000000000000")
     assert.equal(notFound, undefined)
 
-    const unpopulated = await PersonModel.findById(personId)
+    const unpopulated = (await PersonModel.findById(personId))!
     //    ^?
-    assert(unpopulated?.pets instanceof Array)
-    assert.equal(unpopulated?.pets.length, 1)
-    assert.equal(unpopulated?.name, "John")
-    assert.equal(unpopulated?.age, 20)
-    assert.equal(unpopulated?.pets[0].toString(), petId.toString())
-    expectTypeOf(unpopulated?.pets).toEqualTypeOf<ObjectId[]>()
-    expectTypeOf(unpopulated?.favorite).toEqualTypeOf<ObjectId>()
+    assert(unpopulated.pets instanceof Array)
+    assert.equal(unpopulated.pets.length, 1)
+    assert.equal(unpopulated.name, "John")
+    assert.equal(unpopulated.age, 20)
+    assert.equal(unpopulated.pets[0].toString(), petId.toString())
+    expectTypeOf(unpopulated.pets).toEqualTypeOf<ObjectId[]>()
+    expectTypeOf(unpopulated.favorite).toEqualTypeOf<ObjectId | undefined>()
 
     const partialPopulated = await PersonModel.findById(personId, {
       //     ^?
@@ -67,7 +67,9 @@ describe("model testing", () => {
     assert.equal(partialPopulated?.name, "John")
     assert.equal(partialPopulated?.age, 20)
     expectTypeOf(partialPopulated?.pets).toEqualTypeOf<unknown[]>()
-    expectTypeOf(partialPopulated?.favorite).toEqualTypeOf<ObjectId>()
+    expectTypeOf(partialPopulated?.favorite).toEqualTypeOf<
+      ObjectId | undefined
+    >()
 
     const allPopulated = await PersonModel.findById(personId, {
       //     ^?
