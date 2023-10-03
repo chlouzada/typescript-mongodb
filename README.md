@@ -6,6 +6,8 @@ This is a work in progress.
 
 ## Usage
 
+### Client
+
 ```ts
 import { Client } from "typescript-mongodb"
 
@@ -17,13 +19,12 @@ const client = new Client<Config>({
   uri,
 })
 
-const ref = client.ref('my-db.collection1')
+const ref = client.ref('my-db.collection1') // typesafe
 ```
 
 ### Model
-
 ```ts
-const PersonModel = typedClient.model(
+const PersonModel = client.model(
   "my-db.collection1",
   type.object({
     name: type.string,
@@ -39,28 +40,33 @@ const PersonModel = typedClient.model(
   },
 )
 
-const person = await PersonModel.find(...)
-// typed as:
-// {
-//  name: string;
-//  age: number;
-//  pets?: ObjectId[] | undefined;
-//  favorite?: ObjectId | undefined;
-// }
-
-const personPopulated = await PersonModel.findById(personId, {
-  populate: {
-    favorite: true,
-    pets: true,
-  },
-})
+const person = await PersonModel.findById(personId)
 //  typed as:
-// {
-//   name: string;
-//   age: number;
-//   pets: unknown;
-//   favorite: unknown;
-//   _id: ObjectId;
-// } | undefined
+//  {
+//    name: string;
+//    age: number;
+//    pets: ObjectId[] | undefined;
+//    favorite: ObjectId | undefined;
+//    _id: ObjectId;
+//  } | undefined
 
+const populated = await PersonModel.findById(personId, { populate: { pets: true, },})
+//  typed as:
+//  {
+//    name: string;
+//    age: number;
+//    pets: unknown;
+//    favorite: ObjectId | undefined;
+//    _id: ObjectId;
+//  } | undefined
+
+const persons = await PersonModel.find(...)
+//  typed as:
+//  {
+//    name: string;
+//    age: number;
+//    pets: ObjectId[] | undefined;
+//    favorite: ObjectId | undefined;
+//    _id: ObjectId;
+//  }[]
 ```
