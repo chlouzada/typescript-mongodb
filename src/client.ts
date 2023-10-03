@@ -52,8 +52,16 @@ export class Client<
 
 const find =
   <TSchema extends z.ZodTypeAny>(collection: Collection) =>
-  async (filter?: z.infer<TSchema>): Promise<z.infer<TSchema>[]> =>
-    collection.find(filter ?? {}).toArray() as unknown as z.infer<TSchema>[]
+  async (
+    filter?: Partial<
+      z.infer<TSchema> & {
+        _id: ObjectId
+      }
+    >,
+  ): Promise<Prettify<Document<z.infer<TSchema>>>[]> =>
+    collection.find(filter ?? {}).toArray() as unknown as Promise<
+      Prettify<Document<z.infer<TSchema>>>[]
+    >
 
 const findById = <
   TKey extends `${string}.${string}`,
