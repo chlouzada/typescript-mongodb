@@ -1,6 +1,6 @@
 {
   "name": "tsmdb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MongoDB API layer with TypeScript support",
   "publishConfig": {
     "access": "public"
